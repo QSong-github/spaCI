@@ -32,11 +32,11 @@ python preprocessing.py
 ```
 To test spaCI, you need two files:     
 (1) a gene expression matrix.  
-(2) a pair file with two columns: ligend and receptor.   
+(2) a pair file with two columns: ligand and receptor.   
 
-If you want to train your own dataset, you need to prepare thhe following files:      
+If you want to train your own dataset, you need to prepare the following files:      
 (1) a gene expression matrix.     
-(2) a pair file with three columns: ligand, receptor and label (1: interaction; or 0: non-interaction).
+(2) a pair file with three columns: gene1, gene2 and label (1: interaction; or 0: non-interaction).
 
 And you can split the data into train/test file.
 You can set up the split threshold and the save_dir in the configure.yml. 
