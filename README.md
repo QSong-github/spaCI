@@ -19,7 +19,6 @@ git clone https://github.com/QSong-github/spaCI.git
 
 
 ## Tutorial for spaCI
-coming soon
 
 ## setting parameters in yaml
 ```
