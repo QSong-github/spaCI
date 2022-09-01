@@ -1,5 +1,5 @@
 # spaCI
-spatial cell communications through graph attentive model
+Deciphering spatial cellular communications through adaptive graph model
 
 ## Installation
 Download spaCI
