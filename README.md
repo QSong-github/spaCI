@@ -46,9 +46,9 @@ python triplet_main_yaml.py
 ```
 The script was training a model and saved the model in /path/to/spaCI/checkpoint/triplet/best_f1.pth
 
-And we saved the prediction in:
+The inferred ligand-receptor interactions are saved by default in:
 /path/to/spaCI/results.csv 
 
-You can change the model saving and results save path in the configure.yml
+The path of saved model and results can be changed in the configure.yml
 
 
