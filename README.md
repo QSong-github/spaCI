@@ -20,12 +20,12 @@ git clone https://github.com/QSong-github/spaCI.git
 
 ## Tutorial for spaCI
 
-## setting parameters in yaml
+### Setting parameters in yaml
 ```
 path to spaCI/configure.yml
 ```
 
-## processing scripts
+### Processing scripts
 ```
 python preprocessing.py
 ```
@@ -40,7 +40,7 @@ If you want to train your own dataset, you need to prepare the following files:
 And you can split the data into train/test file.
 You can set up the split threshold and the save_dir in the configure.yml. 
 
-## training and testing
+### Training and testing
 ```
 python triplet_main_yaml.py
 ```
