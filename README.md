@@ -9,12 +9,12 @@ git clone https://github.com/QSong-github/spaCI.git
 spaCI is built based on pytorch, tested in: Ubuntu 18.04, 2080TI GPU, Intel i9-9820, 3.30GHZ, 20 core, 64 GB, CUDA environment(cuda 11.2)
 
 ## Tutorial and detailed manual
-1. Generate configuration files [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb)
+1. Generate configuration file [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb)
 2. Use the script "parameter_tuning.sh" to find the best parameters:
 ```
 bash parameter_tuning.sh
 ```
-3. Train spaCI [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb)
+3. Train spaCI model [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb)
 
 ## Dataset Setting
 1. Dataset folder
@@ -52,14 +52,13 @@ The inferred ligand-receptor interactions are saved by default in:
 
 The path of saved model and results can be changed in the configure.yml
 
-## optional 
+## Optional 
 For your own dataset, you need to prepare the following files:      
-(1) a gene expression matrix.     
-(2) a pair file with three columns: gene1, gene2 and label (1: interaction; or 0: non-interaction).
+(1) Spatial gene expression data    
+(2) Spatial cell meta file with cell location information 
 
 We have provided the preprocessing scripts for genearting required data structure for spaCI: 
 
-### Processing scripts
 ```
 python preprocessing.py
 ```
