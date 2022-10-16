@@ -6,17 +6,18 @@ Download spaCI
 ```
 git clone https://github.com/QSong-github/spaCI.git
 ```
+spaCI is built based on pytorch, tested in: Ubuntu 18.04, 2080TI GPU, Intel i9-9820, 3.30GHZ, 20 core, 64 GB, CUDA environment(cuda 11.2)
 
-## Tutorial
-1. generate configuration files [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb)
-2. train spaCI [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb)
-3. use the script from "parameter_tuning.sh" to find the best parameters:
+## Tutorial and detailed manual
+1. Generate configuration files [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb)
+2. Use the script "parameter_tuning.sh" to find the best parameters:
 ```
 bash parameter_tuning.sh
 ```
+3. Train spaCI [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb)
 
 ## Dataset Setting
-1. training data settings
+1. Dataset folder
 ```
 |spaCI
 ├── data_IO
@@ -27,7 +28,7 @@ bash parameter_tuning.sh
 │     ├── spatial_graph.csv
 ```
 
-2. generate spatial graph from real data
+Optional: generate spatial graph from real data
 ```
 |spaCI
 ├── example_data
@@ -35,28 +36,10 @@ bash parameter_tuning.sh
 │     ├── st_meta.csv
 ```
 
-### Setting parameters in yaml
+2. Setting parameters in yaml
 ```
 path to spaCI/configure.yml
 ```
-
-### Processing scripts
-```
-python preprocessing.py
-or:
-cd src
-Rscript spaCI_preprocess.R
-```
-To test spaCI, you need two files:     
-(1) a gene expression matrix.  
-(2) a pair file with two columns: ligand and receptor.   
-
-If you want to train your own dataset, you need to prepare the following files:      
-(1) a gene expression matrix.     
-(2) a pair file with three columns: gene1, gene2 and label (1: interaction; or 0: non-interaction).
-
-And you can split the data into train/test file.
-You can set up the split threshold and the save_dir in the configure.yml. 
 
 ### Model training and prediction
 ```
@@ -69,4 +52,19 @@ The inferred ligand-receptor interactions are saved by default in:
 
 The path of saved model and results can be changed in the configure.yml
 
+## optional 
+For your own dataset, you need to prepare the following files:      
+(1) a gene expression matrix.     
+(2) a pair file with three columns: gene1, gene2 and label (1: interaction; or 0: non-interaction).
 
+We have provided the preprocessing scripts for genearting required data structure for spaCI: 
+
+### Processing scripts
+```
+python preprocessing.py
+```
+or:
+```
+cd src
+Rscript spaCI_preprocess.R
+```
