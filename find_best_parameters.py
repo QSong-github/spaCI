@@ -10,7 +10,7 @@ import random
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-
+import sys, os
 
 def build_dataset(cfg, train=1):
     if train == 1:
@@ -239,7 +239,7 @@ def train(cfg):
             model.set_input(inputs, istrain=1)
             model.single_update()
         # print(epoch)
-        f1 = infer(model, cfg, verbose=True)
+        f1 = infer(model, cfg)
         if f1 > best_f1:
             best_f1 = f1
             best_epoch = epoch
@@ -248,14 +248,11 @@ def train(cfg):
         # print ('best_f1:')
         # print (best_f1)
     model.save('final')
-    f1 = infer(model, cfg, load_model='best_f1')
+    f1 = infer(model, cfg, load_model='best_f1', verbose=True)
     return f1
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--ymlname', type=str, default='configure.yml')
-    opt = parser.parse_args()
-    yaml_file = opt.ymlname
+def find_best_parameters(ymlname):
+    yaml_file = ymlname
     # yaml_file = 'configure.yml'
     with open(yaml_file) as f:
         cfg = yaml.load(f, Loader=yaml.FullLoader)
@@ -263,3 +260,27 @@ if __name__ == '__main__':
     f1 = train(cfg)
     predict(cfg, load_model='best_f1')
 
+    return f1, cfg['TEST']['THRESHOLD']
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--alpha', type=float, default=0.9)
+    parser.add_argument('--logname', type=str, default='parameters.txt')
+    parser.add_argument('--k', type=int, default=2)
+    parser.add_argument('--p', type=float, default=0.1)
+    opt = parser.parse_args()
+
+    ymlname = 'configure_%.2f.yml'%(opt.alpha)
+
+    cmd = 'python gen_conf.py --ymlname %s --threshold %f' %(ymlname, opt.alpha)
+    os.system(cmd)
+
+    f1, threshold = find_best_parameters(ymlname)
+    if not os.path.exists('log'):
+        os.makedirs('log')
+    log = open('log/%s'%(opt.logname), 'a')
+    
+    cmd = 'k: %d, p: %.2f, alpha: %.2f, f1: %.4f\n'%(opt.k, opt.p, opt.alpha, f1)
+    log.write(cmd)
+
+    log.close()

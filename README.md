@@ -7,18 +7,33 @@ Download spaCI
 git clone https://github.com/QSong-github/spaCI.git
 ```
 
+## Tutorial
+1. generate configuration files [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorial_conf.ipynb)
+2. train spaCI [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorial_train.ipynb)
+3. use the script from "main.sh" to find the best parameters:
+```
+bash main.sh
+```
+
 ## Dataset Setting
+1. training data settings
 ```
 |spaCI
-├── dataset
+├── data_IO
 │     ├── exp_data_LR.csv
-│     ├── train_pos_lr_pairs.csv
-│     ├── train_neg_lr_pairs.csv
-│     ├── teest_lr_pairs.csv
+│     ├── triplet.csv
+│     ├── test_pairs.csv
+│     ├── test_lr_pairs.csv
+│     ├── spatial_graph.csv
 ```
 
-
-## Tutorial for spaCI
+2. generate spatial graph from real data
+```
+|spaCI
+├── example_data
+│     ├── st_expression.csv
+│     ├── st_meta.csv
+```
 
 ### Setting parameters in yaml
 ```
