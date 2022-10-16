@@ -8,11 +8,11 @@ git clone https://github.com/QSong-github/spaCI.git
 ```
 
 ## Tutorial
-1. generate configuration files [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorial_conf.ipynb)
-2. train spaCI [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorial_train.ipynb)
-3. use the script from "main.sh" to find the best parameters:
+1. generate configuration files [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb)
+2. train spaCI [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb)
+3. use the script from "parameter_tuning.sh" to find the best parameters:
 ```
-bash main.sh
+bash parameter_tuning.sh
 ```
 
 ## Dataset Setting
@@ -43,6 +43,9 @@ path to spaCI/configure.yml
 ### Processing scripts
 ```
 python preprocessing.py
+or:
+cd src
+Rscript spaCI_preprocess.R
 ```
 To test spaCI, you need two files:     
 (1) a gene expression matrix.  
@@ -55,14 +58,14 @@ If you want to train your own dataset, you need to prepare the following files:
 And you can split the data into train/test file.
 You can set up the split threshold and the save_dir in the configure.yml. 
 
-### Training and testing
+### Model training and prediction
 ```
-python triplet_main_yaml.py
+python main_yaml.py
 ```
 The script was training a model and saved the model in /path/to/spaCI/checkpoint/triplet/best_f1.pth
 
 The inferred ligand-receptor interactions are saved by default in:
-/path/to/spaCI/results.csv 
+/path/to/spaCI/results/spaCI_prediction.csv 
 
 The path of saved model and results can be changed in the configure.yml
 
