@@ -1,33 +1,32 @@
 DATASET:
   NAME: "TripletData"
-  TRAIN_ROOT: "dataset/cv2/triplet.csv"
-  TEST_ROOT: "dataset/cv2/test_pairs.csv"
-  MATRIX_ROOT: "dataset/exp_data_LR.csv"
-  ADJ_ROOT: "dataset/adj_graph.csv"
+  TRAIN_ROOT: "data_IO/triplet.csv"
+  TEST_ROOT: "data_IO/test_pairs.csv"
+  PRED_ROOT: "data_IO/test_lr_pairs.csv"
+  MATRIX_ROOT: "data_IO/exp_data_LR.csv"
+  ADJ_ROOT: "data_IO/spatial_graph.csv"
 
 MODEL:
   NAME: "TripletGraphModel"
-  INPUT_DIM: 4000
-  GRAPH_DIM: 4000
-  MLP_HID_DIMS: [200, 60, 20]
-  GRAPH_HID_DIMS: [200, 20, 5]
+  INPUT_DIM: 3000
+  GRAPH_DIM: 3000
+  MLP_HID_DIMS: [200, 60, 30]
+  GRAPH_HID_DIMS: [200, 60, 30]
   SAVE_PATH: 'checkpoint/triplet/'
 
 TRAIN:
-  LR: 1e-4
-  EPOCHS: 10
+  LR: 1e-1
+  EPOCHS: 200
   SAVE_PATH: "checkpoint/triplet/"
   BATCH_SIZE: 512
 
 TEST:
   SAVE_PATH: "checkpoint/triplet/final.pth"
   BATCH_SIZE: 512
-  PRED: 'results/scadl_result.csv'
+  PRED: 'results/predict.csv'
+  EMB1: 'results/embed_ligand.csv'
+  EMB2: 'results/embed_receptor.csv'
   THRESHOLD: 0.9
 
 SEED: 10
 
-PREPROSS:
-  file_root: 'dataset/test_lr_pairs.csv'
-  save_dir: 'dataset/cv2'
-  split_threshold: 0.5
