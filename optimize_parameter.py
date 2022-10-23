@@ -272,7 +272,7 @@ if __name__ == '__main__':
 
     ymlname = 'configure_%.2f.yml'%(opt.alpha)
 
-    cmd = 'python gen_conf.py --ymlname %s --threshold %f' %(ymlname, opt.alpha)
+    cmd = 'python configuration.py --ymlname %s --threshold %f' %(ymlname, opt.alpha)
     os.system(cmd)
 
     f1, threshold = find_best_parameters(ymlname)

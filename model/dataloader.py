@@ -13,7 +13,7 @@ class TripletData(Data.Dataset):
     def __init__(self, istrain=1, dataroot='', matrixroot=''):
         super().__init__()
         self.istrain = istrain
-        if istrain:
+        if istrain == 1:
             root = dataroot
             csv = pd.read_csv(root, header=0, index_col=0)
             anchor = csv['key'].tolist()
@@ -28,8 +28,10 @@ class TripletData(Data.Dataset):
             csv = pd.read_csv(root, header=0, index_col=0)
             x1 = csv['ligand'].tolist()
             x2 = csv['receptor'].tolist()
-            label = csv['label'].tolist()
-
+            if istrain == 0:
+            	label = csv['label'].tolist()
+            else:
+            	label = [0 for i in range(len(x1))] 
             self.pair_list = []
             for a, p, n in zip(x1, x2, label):
                 self.pair_list.append((a,p,int(n)))
@@ -55,20 +57,26 @@ class TripletData(Data.Dataset):
         return len(self.pair_list)
 
     def __getitem__(self, idx):
-        if self.istrain:
+        if self.istrain == 1:
             a, p, n = self.pair_list[idx]
             a_feat = self.key_names[a]
             p_feat = self.key_names[p]
             n_feat = self.key_names[n]
             return a_feat, p_feat, n_feat, a, p, n
         
-        else:
+        elif self.istrain == 0:
             x1, x2, label = self.pair_list[idx]
             x1_feat = self.key_names[x1]
             x2_feat = self.key_names[x2]
             label = int(label)
             return x1_feat, x2_feat, label, x1, x2
 
+        elif self.istrain == 2:
+            x1, x2, label = self.pair_list[idx]
+            x1_feat = self.key_names[x1]
+            x2_feat = self.key_names[x2]
+            # label = int(label)
+            return x1_feat, x2_feat, x1, x2
         # return ligand_feat, receptor_feat, label, ligand_id, receptor_id
 
 

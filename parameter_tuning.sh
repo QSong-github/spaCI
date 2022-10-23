@@ -7,7 +7,7 @@ do
         for alpha in $(seq 0.1 0.1 0.9)
         do
             cd src
-            Rscript spaCI_preprocess.R ../example_data/st_expression.csv ../example_data/st_meta.csv ${K} ${p}  '../data_IO/real_data'
+            /opt/R/4.0.2/bin/Rscript spaCI_preprocess.R ../dataset/example_data/st_expression.csv ../dataset/example_data/st_meta.csv ${K} ${p}  '../dataset/real_data'
             cd ..
             python optimize_parameter.py --alpha ${alpha} --k ${K} --p ${p}
         done

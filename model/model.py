@@ -163,7 +163,7 @@ class GraphMlpModel(nn.Module):
 
 class TripletGraphModel(nn.Module):
     def __init__(self, input_dim=4000,graph_dim=4000, mlp_channels=[200, 50, 20], graph_channels=[200, 50, 10], lr=1e-3,
-                save_path='', device):
+                save_path='', device='cuda:0'):
         super().__init__()
         self.device = device
         # only support single GPU for now
@@ -194,14 +194,17 @@ class TripletGraphModel(nn.Module):
         self.P_emb = self.model(self.P, self.adj)
         self.N_emb = self.model(self.N, self.adj)
     
-    def inference(self):
+    def inference(self, return_intermediate=False):
         self.model.eval()
         # self.z1, self.z2, self.out = self.model(self.x1, self.x2)
         self.emb1 = self.model(self.x1, self.adj)
         self.emb2 = self.model(self.x2, self.adj)
         cos = nn.CosineSimilarity(dim=1, eps=1e-6)
         distance = cos(self.emb1, self.emb2)
-        return distance
+        if return_intermediate:
+            return distance, self.emb1, self.emb2
+        else:
+            return distance
 
     def backward(self):
         self.optimizer.zero_grad()

@@ -87,7 +87,7 @@ def main():
     yml.write('  THRESHOLD: %f\n'%(opt.threshold))
 
     yml.write('SEED: %d\n'%(opt.seed))
-    yml.write('SEED: %s\n'%(opt.use_cuda))
+    yml.write('use_cuda: %s\n'%(opt.use_cuda))
 
 
 if __name__ == '__main__':
