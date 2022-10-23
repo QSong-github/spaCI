@@ -46,14 +46,14 @@ discoveries of disease mechanisms, and effective biomarkers.
 ```
 
 * Can I generate the triplet and other lr pairs using scripts?    
-  We provided an R script to help you generate the triplets and lr pairs. All you need is two csv files: (st_expression.csv and st_meta.csv, please refer to [here](https://github.com/tonyyang1995/spaCI/tree/main/example_data) for our toy data example). 
+  We provided an R script to help you generate the triplets and lr pairs. All you need is two csv files: (st_expression.csv and st_meta.csv, please refer to [here](https://github.com/tonyyang1995/spaCI/tree/main/dataset/example_data) for our toy data example). 
   The st_expression.csv is a 2D matrix, the columns contains the receptors, and rows are the ligands.
   The st_meta.csv is the meta files, the columns contains the x,y and cell_type, and rows are the information of ligands.
 
 With the two csv file, you can generate the lr pairs with the R script command:
-We prepared to hyperparameters for generate the lr_paris and graph, where
-  K is the hyper-parameters for KNN
-  p is the hypter parameters for cutoff.
+We prepared to hyperparameters for generate the lr_paris and graph, where     
+  K is the hyper-parameters for KNN     
+  p is the hypte-parameters for cutoff.
 ```
 cd src
 /path/to/Rscript spaCI_preprocess.R /path/to/st_expression.csv /path/to/st_meta.csv 5 0.02 /path/to/saved/dir
@@ -85,3 +85,10 @@ or you can also use the following scripts:
 ```
 pip install -r requirements
 ```
+* I want to try the toy demo, Can I train it in one command line?    
+You can use the following commands:
+```
+python configuration.py --trainroot dataset/triplet.csv --testroot dataset/test_pairs.csv --predroot dataset/test_lr_pairs.csv --matrixroot dataset/exp_data_LR.csv --adjroot dataset/spatial_graph.csv --ymlname conf.yml --threshold 0.9'
+python main_yaml.py
+```
+or please refer to our tutorials [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorials/tutorial_train.ipynb)
