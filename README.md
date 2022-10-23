@@ -85,3 +85,10 @@ or you can also use the following scripts:
 ```
 pip install -r requirements
 ```
+* I want to try the toy demo, Can I train it in one command line?    
+You can use the following commands:
+```
+python configuration.py --trainroot dataset/triplet.csv --testroot dataset/test_pairs.csv --predroot dataset/test_lr_pairs.csv --matrixroot dataset/exp_data_LR.csv --adjroot dataset/spatial_graph.csv --ymlname conf.yml --threshold 0.9'
+python main_yaml.py
+```
+or please refer to our tutorials [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorials/tutorial_train.ipynb)
