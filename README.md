@@ -18,25 +18,26 @@ in regulating the crosstalk between fibroblasts and tumors, which contributes to
 patients. Collectively, spaCI addresses the challenges in interrogating SCST data for gaining insights into the
 underlying cellular communications, thus facilitates the discoveries of disease mechanisms, effective biomarkers,
 and therapeutic targets.
-![Image text]('https://github.com/QSong-github/spaCI/blob/main/FIgure%201.png', "Figure 1")
+![Image text](https://github.com/QSong-github/spaCI/raw/main/FIgure%201.png)
 
-## Installation
-Download spaCI
-```
-git clone https://github.com/QSong-github/spaCI.git
-```
-spaCI is built based on pytorch, tested in Ubuntu 18.04, CUDA environment(cuda 11.2)
+## Highlights
+* SpaCI incoporate both spatial locations and gene expressions of cells for revealing the active ligand-receptor signaling axis across neighboring cells.
+* spaCI is able to identify the upstream transcriptional factors mediating the identified ligand-receptor
+interactions, which allows gaining further insights into the underlying cellular communications, the
+discoveries of disease mechanisms, and effective biomarkers.
+* spaCI is developed tailored for spatial transcriptomics and provided available as a ready-to-use opensource software, which demonstrates high accuracy and robust performance over existing methods.
 
-## Tutorial and detailed manual
-1. Generate configuration file [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb)
-2. Use the script "parameter_tuning.sh" to find the best parameters, i.e., ``` bash parameter_tuning.sh ```
-3. Train spaCI model [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb)
+## Tutorail and Usage Manual
+* For the step-by-step tutorial, please refer to the jupyter notebook [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb) 
+* We provide a Toy demo with one-command bash script, please refer to [here](https://github.com/QSong-github/spaCI/blob/main/parameter_tuning.sh)
+* Toy data can be downloaded at [here](https://github.com/QSong-github/spaCI/tree/main/dataset)
 
-## Dataset Setting
-1. Dataset folder
+## FAQ
+* Can I apply SpaCI in my own dataset?
+You can put your data into the following path:
 ```
 |spaCI
-├── data_IO
+├── dataset
 │     ├── exp_data_LR.csv
 │     ├── triplet.csv
 │     ├── test_pairs.csv
@@ -44,39 +45,43 @@ spaCI is built based on pytorch, tested in Ubuntu 18.04, CUDA environment(cuda 1
 │     ├── spatial_graph.csv
 ```
 
-2. Setting parameters in yaml
-```
-path to spaCI/configure.yml
-```
+* Can I generate the triplet and other lr pairs using scripts?
+We provided an R script to help you generate the triplets and lr pairs. All you need is two csv files: (st_expression.csv and st_meta.csv). 
+  The st_expression.csv is a 2D matrix, the columns contains the receptors, and rows are the ligands.
+  The st_meta.csv is the meta files, the columns contains the x,y and cell_type, and rows are the information of ligands.
 
-### Model training and prediction
-```
-python main_yaml.py
-```
-The script was training a model and saved the model in /path/to/spaCI/checkpoint/triplet/best_f1.pth
-
-The inferred ligand-receptor interactions are saved by default in:
-/path/to/spaCI/results/spaCI_prediction.csv 
-
-The path of saved model and results can be changed in the configure.yml
-
-## Optional 
-For your own dataset, you need to prepare the following files:      
-(1) Spatial gene expression data    
-(2) Spatial cell meta file with cell location information
-```
-|spaCI
-├── example_data
-│     ├── st_expression.csv
-│     ├── st_meta.csv
-```
-We have provided the preprocessing scripts for genearting required data structure for spaCI: 
-
-```
-python preprocessing.py
-```
-or:
+With the two csv file, you can generate the lr pairs with the R script command:
+We prepared to hyperparameters for generate the lr_paris and graph, where
+  K is
+  p is
 ```
 cd src
-Rscript spaCI_preprocess.R
+/path/to/Rscript spaCI_preprocess.R /path/to/st_expression.csv /path/to/st_meta.csv K p /path/to/saved/dir
+```
+
+* Do I need a GPU for running spaCI?
+The toy dataset worked find on a standard laptop without a GPU. You can modified in the configuration.yml file, setting using_cuda as 0. However, GPU is recommand for computational efficiency, and it will speed up your experiments when the data grows larger and larger. 
+
+* Can I generate my own conf using command lines?
+some users want to try different hypterparameters, and may not want to manually modify the configure.yml. So we prepare a script to generate the yaml files for you, please refer to [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb) for details.
+
+* how can I install spaCI
+Download spaCI
+```
+git clone https://github.com/QSong-github/spaCI.git
+```
+spaCI is built based on pytorch, tested in Ubuntu 18.04, CUDA environment(cuda 11.2)
+the requirement packages includes:
+```
+torchvision==0.11.1
+torch==1.6.0
+tqdm==4.47.0
+typing==3.7.4.3
+numpy==1.13.3
+pandas==1.5.1
+PyYAML==6.0
+```
+or you can also use the following scripts:
+```
+pip install -r requirements
 ```
