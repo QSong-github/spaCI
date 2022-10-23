@@ -56,11 +56,11 @@ We prepared to hyperparameters for generate the lr_paris and graph, where
   p is
 ```
 cd src
-/path/to/Rscript spaCI_preprocess.R /path/to/st_expression.csv /path/to/st_meta.csv K p /path/to/saved/dir
+/path/to/Rscript spaCI_preprocess.R /path/to/st_expression.csv /path/to/st_meta.csv 5 0.02 /path/to/saved/dir
 ```
 
 * Do I need a GPU for running spaCI?
-The toy dataset worked find on a standard laptop without a GPU. You can modified in the configuration.yml file, setting using_cuda as 0. However, GPU is recommand for computational efficiency, and it will speed up your experiments when the data grows larger and larger. 
+The toy dataset worked find on a standard laptop without a GPU. You can modified in the configuration.yml file, setting " use_cuda='cpu' ". However, GPU is recommand for computational efficiency, and it will speed up your experiments when the data grows larger and larger. 
 
 * Can I generate my own conf using command lines?
 some users want to try different hypterparameters, and may not want to manually modify the configure.yml. So we prepare a script to generate the yaml files for you, please refer to [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb) for details.
