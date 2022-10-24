@@ -356,12 +356,10 @@ def predict(cfg, load_model=None):
         inputs = {}
         inputs['x1'] = x1
         inputs['x2'] = x2
-#         inputs['label'] = y
         inputs['adj'] = adj
 
         model.set_input(inputs, istrain=0)
         dis, emb1, emb2 = model.inference(return_intermediate=True)
-        # print(x1id, emb1.shape)
         dis = dis.detach().cpu()
         emb1 = emb1.detach().cpu().numpy()
         emb2 = emb2.detach().cpu().numpy()
