@@ -138,7 +138,7 @@ adj = torch.from_numpy(adj.to_numpy()).float()
 best_f1 = 0
 ```
 
-### 5. Train model
+### 5. Run spaCI
 The configuration ymal file is provided for users to set model parameters.
 * INPUT_DIM: the number of genes in your dataset. This is the input of MLP trunk. In this demo, the dimension is 4000
 * GRAPH_DIM: the number of genes in your dataset. This is the input of Graph trunk. In this demo, the dimension is 4000
@@ -147,30 +147,72 @@ The configuration ymal file is provided for users to set model parameters.
 * SAVE_PATH: the folder path of saved checkpoint
 * TripletGraphModel: spaCI model structure
 
+### 5.1 Parameter tuning
+
+* We provide one-command bash script for parameter tuning in spaCI, which shows the best parameters for spatial dataset
 
 ```python
-def build_model(cfg):
-    lr = float(cfg['TRAIN']['LR'])
-    if cfg['MODEL']['NAME'] == 'TripletGraphModel':
-        model = TripletGraphModel(
-            lr=lr,
-            input_dim=cfg['MODEL']['INPUT_DIM'],
-            graph_dim=cfg['MODEL']['GRAPH_DIM'],
-            mlp_channels=cfg['MODEL']['MLP_HID_DIMS'],
-            graph_channels=cfg['MODEL']['GRAPH_HID_DIMS'],
-            save_path=cfg['MODEL']['SAVE_PATH'],
-            device=cfg['use_cuda'])
-        return model
-    else:
-        raise NotImplementedError
+bash parameter_tuning.sh
 ```
+
+### 5.2 Train spaCI
+Below shows the codes for training spaCI. Here you can customize your own epochs in the yaml files.
+  In this toy demo, epochs=10 or epochs=20 is enough.
+  We evaluate the model performance in every epoch, and save model parameters with the best f1 scores.
+  Note that we only validate on validation set, which is not used in training.
 
 
 ```python
-model = build_model(cfg)
+best_f1 = 0
+for epoch in tqdm(range(cfg['TRAIN']['EPOCHS'])):
+    # train
+    for batch, (a, p, n, aid, pid, nid) in enumerate(train_dataloader):
+        inputs = {}
+        inputs['A'] = a; inputs['P'] = p; inputs['N'] = n
+            
+        inputs['adj'] = adj
+        model.set_input(inputs, istrain=1)
+        model.single_update()
+    
+    f1 = infer(model, cfg, verbose=False)
+    if f1 > best_f1:
+        best_f1 = f1
+        best_epoch = epoch
+        model.save('best_f1')
+model.save('final')
 ```
 
-### 5.1 Inference
+    100%|███████████████████████████████████████████| 10/10 [01:09<00:00,  6.95s/it]
+
+
+### 5.3 Show evaluation results on validation set
+After training spaCI, the performance of the final model will be print with metrics as below:
+* accuracy
+* Precision
+* Recall
+* Specificity
+* Sensitivity
+* F1-score
+
+
+```python
+f1 = infer(model, cfg, load_model='best_f1', verbose=True)
+```
+
+    
+    ------------------------results----------------------
+           112	       123
+           977	       981
+          acc:	    0.9864
+    precision:	    0.9655
+       recall:	    0.9106
+    Specificity:	    0.9959
+    Sensitivity:	    0.9106
+    F1-measure:	    0.9372
+    ------------------------------------------------------
+    
+
+### 5.4 Inference
 * Infer is used to evaluate the performance of spaCI and identify the best model on validation set. When "load_model" was not assign, or is None, we will use the default parameters in the pre-defined "model" object. Otherwise, we will load the saved checkpoint from disk.
 * verbose is used to print the evaluation results. If verbose=True, the performance of current model in validation set will be print.
 
@@ -267,65 +309,7 @@ def infer(model, cfg, load_model=None, verbose=False):
     return F1
 ```
 
-### 5.2 Train spaCI
-Below shows the codes for training spaCI. Here you can customize your own epochs in the yaml files.
-  In this toy demo, epochs=10 or epochs=20 is enough.
-  We evaluate the model performance in every epoch, and save model parameters with the best f1 scores.
-  Note that we only validate on validation set, which is not used in training.
-
-
-```python
-best_f1 = 0
-for epoch in tqdm(range(cfg['TRAIN']['EPOCHS'])):
-    # train
-    for batch, (a, p, n, aid, pid, nid) in enumerate(train_dataloader):
-        inputs = {}
-        inputs['A'] = a; inputs['P'] = p; inputs['N'] = n
-            
-        inputs['adj'] = adj
-        model.set_input(inputs, istrain=1)
-        model.single_update()
-    
-    f1 = infer(model, cfg, verbose=False)
-    if f1 > best_f1:
-        best_f1 = f1
-        best_epoch = epoch
-        model.save('best_f1')
-model.save('final')
-```
-
-    100%|███████████████████████████████████████████| 10/10 [01:09<00:00,  6.95s/it]
-
-
-### 5.3 Show evaluation results
-After training spaCI, the performance of the final model will be print with metrics as below:
-* accuracy
-* Precision
-* Recall
-* Specificity
-* Sensitivity
-* F1-score
-
-
-```python
-f1 = infer(model, cfg, load_model='best_f1', verbose=True)
-```
-
-    
-    ------------------------results----------------------
-           112	       123
-           977	       981
-          acc:	    0.9864
-    precision:	    0.9655
-       recall:	    0.9106
-    Specificity:	    0.9959
-    Sensitivity:	    0.9106
-    F1-measure:	    0.9372
-    ------------------------------------------------------
-    
-
-
-### 5.4 Save L-R embeddings and predictions
+### 5.5 Save L-R embeddings and predictions
 In this stage, L-R interactions are predictd and saved with their embeddings.
   Since the model have been trained, and all the parameters are fixed, you can predict from multiple inputs, and and do some down-stream tasks based on the predictions or embeddings.
   The predictions and embedding will be saved in the following path, and you can customize it from configure.yml.
