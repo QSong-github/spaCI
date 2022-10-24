@@ -56,7 +56,7 @@ You can download spaCI from our github link:
     We prepare a tutorial for data prepraration [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_preprocess.md)
 
 * __Do I need a GPU for running spaCI?__    
-    spaCI is able to run on a standard laptop without GPU. For computational efficiency, we provide options in the configuration.yml file, with the setting "use_cuda='cpu'" or "use_cuda='gpu'.
+    spaCI is able to run on a standard laptop without GPU. For computational efficiency, we provide options in the configuration.yml file, with the setting use_cuda='cpu' or use_cuda='gpu'.
 
 * __Can I generate my own configuraton file using command line?__    
     To enable users generating their specific configure.yml with different hypterparameters, we provide a script to generate the configuration file. Please refer to [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/manual_configure.md) for details.
