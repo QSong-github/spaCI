@@ -1,4 +1,4 @@
-We use Rscripts to generate the data for training spaCI:
+The data structure for spaCI training is shown as below:
 ```
 |spaCI
 ├── dataset
@@ -9,43 +9,46 @@ We use Rscripts to generate the data for training spaCI:
 │     ├── spatial_graph.csv
 ```
 
-* exp_data_LR.csv: the gene expression of Ligand and Receptor pairs
-* triplet.csv: The Triplet of (A, P, N). A is a ligand gene expression, P is one of the positive receptor gene expression and N is a negative receptor gene expression.
-* test_paris.csv: A Ligand/Receptor gene expression pair for validation. We have additional column with the labels, these are real labels.
-* test_lr_paris.csv: A Ligand/Receptor gene expression pair for validation. Do not need labels, or you can use a constant label instead.
-* spatial_graph.csv: Generated graph, in the form of adjacent lists. 
+* exp_data_LR.csv: spatial gene expression of ligands and receptors.
+* triplet.csv: gene triplet, please refer to our paper for details.
+* validation_pairs.csv: gene pairs used for spaCI validation, which consists of one column of known labels.
+* test_lr_pairs.csv: the list of ligand-receptor pairs for prediction. This dataset does not need labels, or you can use a constant label instead.
+* spatial_graph.csv: spatial cell adjacency graph, in the form of adjacent list.
 
 
-You need to prepare the two csv files please refer to [here](https://github.com/tonyyang1995/spaCI/tree/main/dataset/example_data) for our toy data example):
-* st_expression.csv: genes * cells. 
-* st_meta.csv: the columns stands for x, y, cell_type. The rows stands for the each cell in the dataset. 
+To generate the above data list, you only need to prepare two csv files please refer to [here](https://github.com/QSong-github/spaCI/tree/main/dataset/example_data) for our toy data example):
+* st_expression.csv: spatial cell gene expressions, where rows refer to genes and columns are cells.
+* st_meta.csv: the columns stand for the dimx, dimy, cell type. Rownames refer to cells. Dimx and dimy are the spatial locations of cells.
 
 
-With the two csv file, you can generate the lr pairs with the R script command:
+With these two csv file, you can generate the spaCI needed data structure with one R script command:
+
+```
+cd src
+/path/to/Rscript spaCI_preprocess.R /path/to/st_expression.csv /path/to/st_meta.csv K p /path/to/database /path/to/saved_dir
+```
+
 We prepared to hyperparameters for generate the lr_paris and graph, where     
-* K: the hyper-parameters for KNN     
-* p: the hypte-parameters for cutoff.
-* Database: The database used for generate the graph
-* save_dir: The direction to save the data.
+* K: the number of spatial located neighbors for each cell     
+* p: cutoff of selecting top associated gene pairs
+* Database: L-R interaction database
+* saved_dir: The folder path of saved data
+
+For example, you may run the following command line with specified parameters:
 ```
 cd src
-/path/to/Rscript spaCI_preprocess.R /path/to/st_expression.csv /path/to/st_meta.csv k p /path/to/database.RDS /path/to/saved/dir
+Rscript spaCI_preprocess.R ../dataset/example_data/st_expression.csv ../dataset/example_data/st_meta.csv  5  0.01 'spaCI_database.RDS' ../dataset/real_data
 ```
 
-For example, in our local settings, we are using the following command line:
-```
-cd src
-Rscript spaCI_preprocess.R ../dataset/exaample_data/st_expression.csv ../dataset/exaample_data/st_meta.csv 5 0.01 'spaCi_database.RDS' ../dataset/real_data
-```
-
-You may need to install the following R packages:
+To run the above preprocess step, you may need to install two R packages:
 ```
 install.packages("Matrix")
+```
+```
 install.packages("RANN")
 ```
-sometimes, RANN cannot be installed from install.packages, you can try an alternative method from github:
+or
 ```
 install.packages("devtools")
 devtools::install_github("jefferis/RANN")
-
 ```
