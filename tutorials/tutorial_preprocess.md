@@ -32,12 +32,13 @@ We prepared to hyperparameters for generate the lr_paris and graph, where
 * K: the number of spatial located neighbors for each cell     
 * p: cutoff of selecting top associated gene pairs
 * Database: L-R interaction database
+* method: correlation methods for selecting gene pairs, including "pearson", "spearman", "kendall".
 * saved_dir: The folder path of saved data
 
 For example, you may run the following command line with specified parameters:
 ```
 cd src
-Rscript spaCI_preprocess.R ../dataset/example_data/st_expression.csv ../dataset/example_data/st_meta.csv  5  0.01 'spaCI_database.RDS' ../dataset/real_data
+Rscript spaCI_preprocess.R ../dataset/example_data/st_expression.csv ../dataset/example_data/st_meta.csv  5  0.01 'spaCI_database.RDS' 'pearson' ../dataset/real_data
 ```
 
 To run the above preprocess step, you may need to install two R packages:
