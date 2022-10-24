@@ -45,10 +45,5 @@ To run the above preprocess step, you may need to install two R packages:
 install.packages("Matrix")
 ```
 ```
-install.packages("RANN")
-```
-or
-```
-install.packages("devtools")
-devtools::install_github("jefferis/RANN")
+install.packages("RANN") or devtools::install_github("jefferis/RANN")
 ```
