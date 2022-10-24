@@ -3,11 +3,19 @@
 ### tutorial
   To run spaCI, the input data are shown in the required structure and the data path is assigned in the configure.yml files. Please refer to our preprocess manual [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_preprocess.md) for details.
   
-With the data and configuration yaml file, spaCI will output embeddings and predictions in one command line:
+* With the data and configuration yaml file, spaCI provides parameter tuning using one command line:
 
 
 ```python
-* python main_yaml.py
+bash parameter_tuning.sh
+```
+
+
+* After parameter tuning, spaCI will output embeddings and predictions in one command line:
+
+
+```python
+python main_yaml.py
 ```
 
 ### manual
