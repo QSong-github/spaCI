@@ -1,5 +1,4 @@
 # spaCI: deciphering spatial cellular communications through adaptive graph model
-Ziyang Tang, Tonglin Zhang, Baijian Yang, Jing Su, Qianqian Song
 
 Cell-cell communications are vital for biological signaling and play important roles in complex diseases. Recent
 advances in single-cell spatial transcriptomics (SCST) technologies allow examining the spatial cell
