@@ -38,7 +38,8 @@ def build_model(cfg):
             graph_dim=cfg['MODEL']['GRAPH_DIM'],
             mlp_channels=cfg['MODEL']['MLP_HID_DIMS'],
             graph_channels=cfg['MODEL']['GRAPH_HID_DIMS'],
-            save_path=cfg['MODEL']['SAVE_PATH'])
+            save_path=cfg['MODEL']['SAVE_PATH'],
+            device=cfg['use_cuda'])
         return model
     else:
         raise NotImplementedError
@@ -78,11 +79,11 @@ def predict(cfg, load_model=None):
     index1 = None
     index2 = None
 
-    for batch, (x1, x2, y, x1id, x2id) in enumerate(dataloader):
+    for batch, (x1, x2, x1id, x2id) in enumerate(dataloader):
         inputs = {}
         inputs['x1'] = x1
         inputs['x2'] = x2
-        inputs['label'] = y
+        # inputs['label'] = y
         inputs['adj'] = adj
 
         model.set_input(inputs, istrain=0)
@@ -111,8 +112,8 @@ def predict(cfg, load_model=None):
 
         for i in range(len(x1id)):
             id1, id2 = x1id[i], x2id[i]
-            savepred.write('%s,%s,%d,%d,%.4f\n' %
-                           (id1, id2, y[i], int(pred[i]), dis[i]))
+            savepred.write('%s,%s,%d,%.4f\n' %
+                           (id1, id2, int(pred[i]), dis[i]))
         df1 = pd.DataFrame(embs1, index=index1)
         df2 = pd.DataFrame(embs2, index=index2)
         df1.to_csv(cfg['TEST']['EMB1'])
@@ -148,6 +149,12 @@ def infer(model, cfg, load_model=None, verbose=False):
     label_tp = 0
     label_tn = 0
 
+    dirs = cfg['TEST']['PRED']
+    dirs = dirs.split('/')[:-1]
+    dirs = '/'.join(dirs)
+    if not os.path.exists(dirs):
+        os.makedirs(dirs)
+    
     savepred = open(cfg['TEST']['PRED'], 'w')
     savepred.write('ligand,receptor,truelabel,pred\n')
     adj = pd.read_csv(cfg['DATASET']['ADJ_ROOT'], header=0, index_col=0)
@@ -218,17 +225,11 @@ def train(cfg):
     dataloader = Data.DataLoader(dataset,
                                  batch_size=cfg['TRAIN']['BATCH_SIZE'],
                                  shuffle=True)
-    # infer(model, cfg)
     best_f1 = 0
     best_epoch = 0
 
     adj = pd.read_csv(cfg['DATASET']['ADJ_ROOT'], header=0, index_col=0)
     adj = torch.from_numpy(adj.to_numpy()).float()
-
-    # print('initialize')
-    # infer(model, cfg)
-    # print('best_f1:')
-    # print(best_f1)
 
     for epoch in tqdm(range(cfg['TRAIN']['EPOCHS'])):
         for batch, (a, p, n, aid, pid, nid) in enumerate(dataloader):
@@ -239,21 +240,19 @@ def train(cfg):
             model.set_input(inputs, istrain=1)
             model.single_update()
         # print(epoch)
-        f1 = infer(model, cfg, verbose=True)
+        f1 = infer(model, cfg, verbose=False)
         if f1 > best_f1:
             best_f1 = f1
             best_epoch = epoch
             model.save('best_f1')
 
-        # print ('best_f1:')
-        # print (best_f1)
     model.save('final')
-    f1 = infer(model, cfg, load_model='best_f1')
+    f1 = infer(model, cfg, load_model='best_f1', verbose=True)
     return f1
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ymlname', type=str, default='configure.yml')
+    parser.add_argument('--ymlname', type=str, default='conf.yml')
     opt = parser.parse_args()
     yaml_file = opt.ymlname
     # yaml_file = 'configure.yml'

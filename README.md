@@ -21,7 +21,7 @@ and therapeutic targets.
 ![Image text](https://github.com/QSong-github/spaCI/raw/main/FIgure%201.png)
 
 ## Highlights
-* SpaCI incoporate both spatial locations and gene expressions of cells for revealing the active ligand-receptor signaling axis across neighboring cells.
+* spaCI incoporate both spatial locations and gene expressions of cells for revealing the active ligand-receptor signaling axis across neighboring cells.
 * spaCI is able to identify the upstream transcriptional factors mediating the identified ligand-receptor
 interactions, which allows gaining further insights into the underlying cellular communications, the
 discoveries of disease mechanisms, and effective biomarkers.
@@ -29,59 +29,44 @@ discoveries of disease mechanisms, and effective biomarkers.
 
 ## Tutorail and Usage Manual
 * For the step-by-step tutorial, please refer to the jupyter notebook [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb) 
-* We provide a Toy demo with one-command bash script, please refer to [here](https://github.com/QSong-github/spaCI/blob/main/parameter_tuning.sh)
+* We provide a toy demo with one-command bash script, please refer to [here](https://github.com/QSong-github/spaCI/blob/main/parameter_tuning.sh)
 * Toy data can be downloaded at [here](https://github.com/QSong-github/spaCI/tree/main/dataset)
 
 ## FAQ
-* Can I apply SpaCI in my own dataset?
-You can put your data into the following path:
-```
-|spaCI
-├── dataset
-│     ├── exp_data_LR.csv
-│     ├── triplet.csv
-│     ├── test_pairs.csv
-│     ├── test_lr_pairs.csv
-│     ├── spatial_graph.csv
-```
+* __How can I install spaCI?__       
+You can download spaCI from our github link:
+  ```
+  git clone https://github.com/QSong-github/spaCI.git
+  ```
+  spaCI is built based on pytorch, tested in Ubuntu 18.04, CUDA environment(cuda 11.2)
+  the requirement packages includes:
+  ```
+  torchvision==0.11.1
+  torch==1.6.0
+  tqdm==4.47.0
+  typing==3.7.4.3
+  numpy==1.13.3
+  pandas==1.5.1
+  PyYAML==6.0
+  ```
+  or you can also use the following scripts:
+  ```
+  pip install -r requirements.txt
+  ```
 
-* Can I generate the triplet and other lr pairs using scripts?
-We provided an R script to help you generate the triplets and lr pairs. All you need is two csv files: (st_expression.csv and st_meta.csv). 
-  The st_expression.csv is a 2D matrix, the columns contains the receptors, and rows are the ligands.
-  The st_meta.csv is the meta files, the columns contains the x,y and cell_type, and rows are the information of ligands.
+* __I want to try the toy demo, Can I train it in one command line?__    
+  You can use the following commands:
+  ```
+  python configuration.py --trainroot dataset/triplet.csv --testroot dataset/test_pairs.csv --predroot dataset/test_lr_pairs.csv --matrixroot dataset/exp_data_LR.csv --adjroot dataset/spatial_graph.csv --ymlname conf.yml --threshold 0.9' 
+  python main_yaml.py
+  ```
+  or please refer to our tutorials [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorials/tutorial_train.ipynb)
 
-With the two csv file, you can generate the lr pairs with the R script command:
-We prepared to hyperparameters for generate the lr_paris and graph, where
-  K is
-  p is
-```
-cd src
-/path/to/Rscript spaCI_preprocess.R /path/to/st_expression.csv /path/to/st_meta.csv K p /path/to/saved/dir
-```
+* __Can I apply SpaCI in my own dataset? And how to generate the desired format for spaCI?__         
+    We prepare a tutorial [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorials/tutorial_preprocessing_R.md)
 
-* Do I need a GPU for running spaCI?
-The toy dataset worked find on a standard laptop without a GPU. You can modified in the configuration.yml file, setting using_cuda as 0. However, GPU is recommand for computational efficiency, and it will speed up your experiments when the data grows larger and larger. 
+* __Do I need a GPU for running spaCI?__    
+    The toy dataset worked find on a standard laptop without a GPU. You can modified in the configuration.yml file, setting " use_cuda='cpu' ". However, GPU is recommand for computational efficiency, and it will speed up your experiments when the data grows larger and larger. 
 
-* Can I generate my own conf using command lines?
-some users want to try different hypterparameters, and may not want to manually modify the configure.yml. So we prepare a script to generate the yaml files for you, please refer to [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb) for details.
-
-* how can I install spaCI
-Download spaCI
-```
-git clone https://github.com/QSong-github/spaCI.git
-```
-spaCI is built based on pytorch, tested in Ubuntu 18.04, CUDA environment(cuda 11.2)
-the requirement packages includes:
-```
-torchvision==0.11.1
-torch==1.6.0
-tqdm==4.47.0
-typing==3.7.4.3
-numpy==1.13.3
-pandas==1.5.1
-PyYAML==6.0
-```
-or you can also use the following scripts:
-```
-pip install -r requirements
-```
+* __Can I generate my own conf using command lines?__    
+    some users want to try different hypterparameters, and may not want to manually modify the configure.yml. So we prepare a script to generate the yaml files for you, please refer to [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb) for details.

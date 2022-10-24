@@ -35,6 +35,9 @@ def main():
     # seed
     parser.add_argument('--seed', type=int, default=10)
 
+    # cuda
+    parser.add_argument('--use_cuda', type=str, default='cuda:0')
+
     # yml name
     parser.add_argument('--ymlname', type=str, default='configure_gen.yml')
 
@@ -84,6 +87,8 @@ def main():
     yml.write('  THRESHOLD: %f\n'%(opt.threshold))
 
     yml.write('SEED: %d\n'%(opt.seed))
+    yml.write('use_cuda: %s\n'%(opt.use_cuda))
+
 
 if __name__ == '__main__':
     main()
