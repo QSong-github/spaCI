@@ -11,7 +11,7 @@ spaCI. spaCI incorporates both spatial locations and gene expression profiles of
 ![Image text](https://github.com/QSong-github/spaCI/raw/main/FIgure%201.png)
 
 ## Highlights
-* spaCI incoporate both spatial locations and gene expressions of cells for revealing the active ligand-receptor signaling axis across neighboring cells.
+* spaCI incoporates both spatial locations and gene expressions of cells for revealing the active ligand-receptor signaling axis across neighboring cells.
 * spaCI is able to identify the upstream transcriptional factors mediating the identified ligand-receptor
 interactions, which allows gaining further insights into the underlying cellular communications, the
 discoveries of disease mechanisms, and effective biomarkers.
