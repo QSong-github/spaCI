@@ -163,13 +163,12 @@ class GraphMlpModel(nn.Module):
 
 class TripletGraphModel(nn.Module):
     def __init__(self, input_dim=4000,graph_dim=4000, mlp_channels=[200, 50, 20], graph_channels=[200, 50, 10], lr=1e-3,
-                save_path=''):
+                save_path='', device='cuda:0'):
         super().__init__()
-
+        self.device = device
         # only support single GPU for now
         # self.model = Encoder(input_dim, channels, out_dim)
-        self.model = GraphMlpModel(input_dim, graph_dim, mlp_channels, graph_channels).cuda()
-
+        self.model = GraphMlpModel(input_dim, graph_dim, mlp_channels, graph_channels).to(self.device)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=lr)
         self.criterion = TripletLoss(margin=1.0)
         self.loss_stat = {}
@@ -177,15 +176,15 @@ class TripletGraphModel(nn.Module):
 
     def set_input(self, inputs, istrain=1):
         if istrain:
-            self.A = Variable(inputs['A']).cuda()
-            self.P = Variable(inputs['P']).cuda()
-            self.N = Variable(inputs['N']).cuda()
-            self.adj = Variable(inputs['adj']).cuda()
+            self.A = Variable(inputs['A']).to(self.device)
+            self.P = Variable(inputs['P']).to(self.device)
+            self.N = Variable(inputs['N']).to(self.device)
+            self.adj = Variable(inputs['adj']).to(self.device)
             # self.label = Variable(inputs['label']).cuda()
         else:
-            self.x1 = Variable(inputs['x1']).cuda()
-            self.x2 = Variable(inputs['x2']).cuda()
-            self.adj = Variable(inputs['adj']).cuda()
+            self.x1 = Variable(inputs['x1']).to(self.device)
+            self.x2 = Variable(inputs['x2']).to(self.device)
+            self.adj = Variable(inputs['adj']).to(self.device)
 
     def forward(self):
         self.model.train()
@@ -195,14 +194,17 @@ class TripletGraphModel(nn.Module):
         self.P_emb = self.model(self.P, self.adj)
         self.N_emb = self.model(self.N, self.adj)
     
-    def inference(self):
+    def inference(self, return_intermediate=False):
         self.model.eval()
         # self.z1, self.z2, self.out = self.model(self.x1, self.x2)
         self.emb1 = self.model(self.x1, self.adj)
         self.emb2 = self.model(self.x2, self.adj)
         cos = nn.CosineSimilarity(dim=1, eps=1e-6)
         distance = cos(self.emb1, self.emb2)
-        return distance
+        if return_intermediate:
+            return distance, self.emb1, self.emb2
+        else:
+            return distance
 
     def backward(self):
         self.optimizer.zero_grad()
@@ -232,9 +234,9 @@ class TripletGraphModel(nn.Module):
 
 class TripletModel(nn.Module):
     def __init__(self, input_dim=4000, channels=[200, 50, 20], out_dim=2, lr=1e-3,
-                save_path=''):
+                save_path='', device='cuda:0'):
         super().__init__()
-
+        self.device=device
         # only support single GPU for now
         # self.model = Encoder(input_dim, channels, out_dim)
         self.model = Encoder2(input_dim, channels, out_dim)
@@ -246,13 +248,13 @@ class TripletModel(nn.Module):
 
     def set_input(self, inputs, istrain=1):
         if istrain:
-            self.A = Variable(inputs['A']).cuda()
-            self.P = Variable(inputs['P']).cuda()
-            self.N = Variable(inputs['N']).cuda()
+            self.A = Variable(inputs['A']).to(self.device)
+            self.P = Variable(inputs['P']).to(self.device)
+            self.N = Variable(inputs['N']).to(self.device)
             # self.label = Variable(inputs['label']).cuda()
         else:
-            self.x1 = Variable(inputs['x1']).cuda()
-            self.x2 = Variable(inputs['x2']).cuda()
+            self.x1 = Variable(inputs['x1']).to(self.device)
+            self.x2 = Variable(inputs['x2']).to(self.device)
 
     def forward(self):
         self.model.train()
@@ -296,9 +298,9 @@ class TripletModel(nn.Module):
 
 class PairModel(nn.Module):
     def __init__(self, input_dim=4000, channels=[200, 50, 20], out_dim=2, lr=1e-3,
-                save_path=''):
+                save_path='', device='cuda:0'):
         super().__init__()
-
+        self.device = device
         # only support single GPU for now
         # self.model = Encoder(input_dim, channels, out_dim)
         self.model = Encoder(input_dim * 2, channels, out_dim)
@@ -309,9 +311,9 @@ class PairModel(nn.Module):
         self.save_path = save_path
 
     def set_input(self, inputs):
-        self.x1 = Variable(inputs['x1']).cuda()
-        self.x2 = Variable(inputs['x2']).cuda()
-        self.label = Variable(inputs['label']).cuda()
+        self.x1 = Variable(inputs['x1']).to(self.device)
+        self.x2 = Variable(inputs['x2']).to(self.device)
+        self.label = Variable(inputs['label']).to(self.device)
 
     def forward(self):
         self.model.train()
