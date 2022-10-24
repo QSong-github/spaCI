@@ -43,7 +43,5 @@ Rscript spaCI_preprocess.R ../dataset/example_data/st_expression.csv ../dataset/
 To run the above preprocess step, you may need to install two R packages:
 ```
 install.packages("Matrix")
-```
-```
 install.packages("RANN") or devtools::install_github("jefferis/RANN")
 ```
