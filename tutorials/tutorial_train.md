@@ -41,14 +41,6 @@ cmd = 'python ../configuration.py --trainroot ../dataset/triplet.csv --testroot 
 os.system(cmd)
 ```
 
-
-
-
-    0
-
-
-
-
 ```python
 yaml_file = '../configure.yml'
 with open(yaml_file) as f:
