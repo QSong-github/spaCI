@@ -27,7 +27,7 @@ interactions, which allows gaining further insights into the underlying cellular
 discoveries of disease mechanisms, and effective biomarkers.
 * spaCI is developed tailored for spatial transcriptomics and provided available as a ready-to-use opensource software, which demonstrates high accuracy and robust performance over existing methods.
 
-## Tutorail and Usage Manual
+## User Manual and Tutorial
 * For the step-by-step tutorial, please refer to the jupyter notebook [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb) 
 * We provide a toy demo with one-command bash script, please refer to [here](https://github.com/QSong-github/spaCI/blob/main/parameter_tuning.sh)
 * Toy data can be downloaded at [here](https://github.com/QSong-github/spaCI/tree/main/dataset)
