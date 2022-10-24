@@ -1,4 +1,4 @@
-# spaCI tutorial
+# spaCI manual and tutorial
 This tutorial shows how to use spaCI to train, validate and predict ligand-receptor interactions.
 
   Before this tutorial, the input data are shown in the required structure and the data path is assigned in the configure.yml files. Please refer to our preprocess manual [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_preprocess.md) for details.
