@@ -59,13 +59,13 @@ You can download spaCI from our github link:
   python configuration.py --trainroot dataset/triplet.csv --testroot dataset/test_pairs.csv --predroot dataset/test_lr_pairs.csv --matrixroot dataset/exp_data_LR.csv --adjroot dataset/spatial_graph.csv --ymlname conf.yml --threshold 0.9' 
   python main_yaml.py
   ```
-  or please refer to our tutorials [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorials/tutorial_train.ipynb)
+  or please refer to our tutorials [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb)
 
-* __Can I apply SpaCI in my own dataset? And how to generate the desired format for spaCI?__         
-    We prepare a tutorial [here](https://github.com/tonyyang1995/spaCI/blob/main/tutorials/tutorial_preprocessing_R.md)
+* __How can I apply spaCI in my own dataset? And how to generate the desired format for spaCI?__         
+    We prepare a tutorial [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_preprocess.md)
 
 * __Do I need a GPU for running spaCI?__    
-    The toy dataset worked find on a standard laptop without a GPU. You can modified in the configuration.yml file, setting " use_cuda='cpu' ". However, GPU is recommand for computational efficiency, and it will speed up your experiments when the data grows larger and larger. 
+    spaCI is able to run on a standard laptop without GPU. For computational efficiency, we provide options in the configuration.yml file, with the setting "use_cuda='cpu'" or "use_cuda='gpu'.
 
-* __Can I generate my own conf using command lines?__    
-    some users want to try different hypterparameters, and may not want to manually modify the configure.yml. So we prepare a script to generate the yaml files for you, please refer to [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_conf.ipynb) for details.
+* __Can I generate my own configuraton file using command line?__    
+    To enable users generating their specific configure.yml with different hypterparameters, we provide a script to generate the configuration file. Please refer to [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/manual_configure.md) for details.
