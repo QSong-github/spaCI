@@ -50,10 +50,10 @@ You can download spaCI from our github link:
   python configuration.py --trainroot dataset/triplet.csv --testroot dataset/test_pairs.csv --predroot dataset/test_lr_pairs.csv --matrixroot dataset/exp_data_LR.csv --adjroot dataset/spatial_graph.csv --ymlname conf.yml --threshold 0.9' 
   python main_yaml.py
   ```
-  or please refer to our tutorials [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb)
+  or please refer to our training tutorial [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_train.ipynb)
 
 * __How can I apply spaCI in my own dataset? And how to generate the desired format for spaCI?__         
-    We prepare a tutorial [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_preprocess.md)
+    We prepare a tutorial for data prepraration [here](https://github.com/QSong-github/spaCI/blob/main/tutorials/tutorial_preprocess.md)
 
 * __Do I need a GPU for running spaCI?__    
     spaCI is able to run on a standard laptop without GPU. For computational efficiency, we provide options in the configuration.yml file, with the setting "use_cuda='cpu'" or "use_cuda='gpu'.
