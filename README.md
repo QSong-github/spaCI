@@ -8,6 +8,9 @@ effective and tailored methods to accurately infer cellular communications. Here
 communications from SCST profiles, we propose a novel adaptive graph model with attention mechanisms named
 spaCI. spaCI incorporates both spatial locations and gene expression profiles of cells to identify the active ligandreceptor signaling axis across neighboring cells. 
 
+## Please cite: 
+Tang Z, Zhang T, Yang B, Su J, Song Q, spaCI: deciphering spatial cellular communications through adaptive graph model, Briefings in Bioinformatics, 2022;, bbac563, https://doi.org/10.1093/bib/bbac563
+
 ![Image text](https://github.com/QSong-github/spaCI/raw/main/FIgure%201.png)
 
 ## Highlights
