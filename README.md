@@ -1,5 +1,7 @@
 # spaCI: deciphering spatial cellular communications through adaptive graph model
 
+[![DOI](https://zenodo.org/badge/524767107.svg)](https://zenodo.org/badge/latestdoi/524767107)
+
 Cell-cell communications are vital for biological signaling and play important roles in complex diseases. Recent
 advances in single-cell spatial transcriptomics (SCST) technologies allow examining the spatial cell
 communication landscapes and hold the promise for disentangling the complex ligand-receptor interactions across
